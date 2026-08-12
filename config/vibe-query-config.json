@@ -1,0 +1,47 @@
+{
+  "_comment": "Validated 2026-08-12 via Vibe Prospecting (Explorium) MCP tool. See docs/LEAD_SOURCING.md for how this was derived. Matched ~178 US records at validation time.",
+  "entity_type": "prospects",
+  "filters": {
+    "business_intent_topics": {
+      "topics": [
+        "business finance: merchant cash advances",
+        "funding & loans: business funding",
+        "business finance: business loans",
+        "business finance: working capital finance",
+        "funding & loans: business credit"
+      ],
+      "negate": false
+    },
+    "linkedin_category": {
+      "values": [
+        "restaurants",
+        "food and beverage services",
+        "retail",
+        "retail groceries",
+        "retail apparel and fashion",
+        "retail sporting goods",
+        "construction",
+        "building construction",
+        "residential building construction",
+        "nonresidential building construction",
+        "truck transportation",
+        "transportation/trucking/railroad",
+        "freight and package transportation",
+        "vehicle repair and maintenance",
+        "retail motor vehicles",
+        "automotive",
+        "personal care services",
+        "wellness and fitness services",
+        "cosmetology and barber schools"
+      ]
+    },
+    "company_country_code": { "values": ["US"] },
+    "company_revenue": { "values": ["0-500K", "500K-1M", "1M-5M", "5M-10M"] },
+    "company_size": { "values": ["1-10", "11-50", "51-200"] },
+    "job_level": { "values": ["owner", "founder", "president", "c-suite", "vice president", "manager"] },
+    "has_email": true
+  },
+  "known_false_positives_to_filter": [
+    "Businesses that are subsidiaries of large/public parent companies (check business_business_description for acquisition language before pushing to GHL)"
+  ]
+}

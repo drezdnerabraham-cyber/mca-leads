@@ -1,0 +1,178 @@
+{
+  "name": "MCA Lead Intake",
+  "active": false,
+  "settings": { "executionOrder": "v1" },
+  "nodes": [
+    {
+      "id": "webhook-intake",
+      "name": "Lead Batch Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [-1120, 0],
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "mca-lead-intake",
+        "authentication": "headerAuth",
+        "responseMode": "onReceived",
+        "options": {}
+      },
+      "credentials": {
+        "httpHeaderAuth": { "id": "n8n-webhook-auth", "name": "MCA Webhook Auth" }
+      }
+    },
+    {
+      "id": "split-batch",
+      "name": "Split Batch",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [-880, 0],
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "// Body shape expected: { source: 'vibe_prospecting'|'ucc', leads: [...] }\nconst body = $input.first().json.body ?? $input.first().json;\nconst source = body.source || 'unknown';\nconst leads = body.leads || [];\nreturn leads.map(lead => ({ json: { ...lead, lead_source: source } }));"
+      }
+    },
+    {
+      "id": "score-normalize",
+      "name": "Score & Normalize",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [-640, 0],
+      "parameters": {
+        "mode": "runOnceForEachItem",
+        "jsCode": "// Mirrors config/scoring-rules.json -- keep both in sync manually for now.\nconst lead = $input.item.json;\nlet score = 0;\n\nconst intentTopics = (lead.business_business_intent_topics || '');\nconst topicMatch = /\"topic\":\"([^\"]+)\",\"score\":(\\d+)/.exec(intentTopics);\nconst topic = topicMatch ? topicMatch[1] : null;\nconst intentScore = topicMatch ? parseInt(topicMatch[2], 10) : 0;\n\nif (topic === 'business finance: merchant cash advances') score += 25;\nif (intentScore >= 70) score += 20;\nelse if (intentScore >= 60) score += 10;\n\nconst jobLevel = (lead.prospect_job_seniority_level || '').toLowerCase();\nif (['owner', 'founder', 'president'].some(l => jobLevel.includes(l))) score += 20;\n\nif (['500K-1M', '1M-5M'].includes(lead.business_yearly_revenue_range)) score += 15;\n\nconst naics = (lead.business_naics_description || '').toLowerCase();\nif (/food services|construction|truck transportation/.test(naics)) score += 10;\n\nif (lead.prospect_phone) score += 10;\n\nconst desc = (lead.business_business_description || '').toLowerCase();\nif (/acquired by|subsidiary of/.test(desc)) score -= 50;\n\nlet priority = 'cold';\nif (score >= 60) priority = 'hot';\nelse if (score >= 35) priority = 'warm';\n\nreturn { json: { ...lead, score, priority } };"
+      }
+    },
+    {
+      "id": "filter-viable",
+      "name": "Score Above Threshold?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [-400, 0],
+      "parameters": {
+        "conditions": {
+          "options": { "caseSensitive": true, "leftValue": "", "typeValidation": "loose" },
+          "conditions": [
+            {
+              "leftValue": "={{ $json.score }}",
+              "rightValue": 0,
+              "operator": { "type": "number", "operation": "gt" }
+            }
+          ],
+          "combinator": "and"
+        }
+      }
+    },
+    {
+      "id": "upsert-contact",
+      "name": "Upsert GHL Contact",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [-160, -120],
+      "parameters": {
+        "method": "POST",
+        "url": "https://services.leadconnectorhq.com/contacts/upsert",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "Version", "value": "2021-07-28" },
+            { "name": "Content-Type", "value": "application/json" }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ {\n  locationId: $env.GHL_LOCATION_ID,\n  firstName: $json.prospect_first_name,\n  lastName: $json.prospect_last_name,\n  email: $json.prospect_email,\n  phone: $json.prospect_phone,\n  companyName: $json.business_name,\n  source: $json.lead_source,\n  customFields: [\n    { key: 'lead_score', field_value: $json.score },\n    { key: 'lead_priority', field_value: $json.priority },\n    { key: 'intent_topic', field_value: $json.business_business_intent_topics }\n  ]\n} }}"
+      },
+      "credentials": {
+        "httpHeaderAuth": { "id": "ghl-api-key", "name": "GHL API Key" }
+      }
+    },
+    {
+      "id": "create-opportunity",
+      "name": "Create Opportunity",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [80, -120],
+      "parameters": {
+        "method": "POST",
+        "url": "https://services.leadconnectorhq.com/opportunities/",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "Version", "value": "2021-07-28" },
+            { "name": "Content-Type", "value": "application/json" }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ {\n  pipelineId: $env.GHL_PIPELINE_ID,\n  locationId: $env.GHL_LOCATION_ID,\n  pipelineStageId: $env.GHL_NEW_LEAD_STAGE_ID,\n  contactId: $json.contactId ?? $node[\"Upsert GHL Contact\"].json.contact.id,\n  name: $json.business_name + ' - MCA Lead',\n  status: 'open'\n} }}"
+      },
+      "credentials": {
+        "httpHeaderAuth": { "id": "ghl-api-key", "name": "GHL API Key" }
+      }
+    },
+    {
+      "id": "trigger-warmup",
+      "name": "Trigger Warmup Workflow",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [320, -120],
+      "parameters": {
+        "method": "POST",
+        "url": "=https://services.leadconnectorhq.com/contacts/{{ $node[\"Upsert GHL Contact\"].json.contact.id }}/workflow/{{ $env.GHL_WARMUP_WORKFLOW_ID }}",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [{ "name": "Version", "value": "2021-07-28" }]
+        }
+      },
+      "credentials": {
+        "httpHeaderAuth": { "id": "ghl-api-key", "name": "GHL API Key" }
+      }
+    },
+    {
+      "id": "create-call-task",
+      "name": "Create Call Task",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [560, -120],
+      "parameters": {
+        "method": "POST",
+        "url": "=https://services.leadconnectorhq.com/contacts/{{ $node[\"Upsert GHL Contact\"].json.contact.id }}/tasks",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "Version", "value": "2021-07-28" },
+            { "name": "Content-Type", "value": "application/json" }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ {\n  title: 'Qualifying call: ' + $json.business_name + ' (' + $json.priority + ')',\n  dueDate: $now.plus({ hours: $json.priority === 'hot' ? 4 : ($json.priority === 'warm' ? 24 : 72) }).toISO(),\n  completed: false\n} }}"
+      },
+      "credentials": {
+        "httpHeaderAuth": { "id": "ghl-api-key", "name": "GHL API Key" }
+      }
+    }
+  ],
+  "connections": {
+    "Lead Batch Webhook": { "main": [[{ "node": "Split Batch", "type": "main", "index": 0 }]] },
+    "Split Batch": { "main": [[{ "node": "Score & Normalize", "type": "main", "index": 0 }]] },
+    "Score & Normalize": { "main": [[{ "node": "Score Above Threshold?", "type": "main", "index": 0 }]] },
+    "Score Above Threshold?": {
+      "main": [
+        [{ "node": "Upsert GHL Contact", "type": "main", "index": 0 }],
+        []
+      ]
+    },
+    "Upsert GHL Contact": { "main": [[{ "node": "Create Opportunity", "type": "main", "index": 0 }]] },
+    "Create Opportunity": { "main": [[{ "node": "Trigger Warmup Workflow", "type": "main", "index": 0 }]] },
+    "Trigger Warmup Workflow": { "main": [[{ "node": "Create Call Task", "type": "main", "index": 0 }]] }
+  }
+}

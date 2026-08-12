@@ -1,0 +1,59 @@
+{
+  "_comment": "Points-based scoring. n8n's scoring Code node sums these into lead.score, then buckets into lead.priority. Tune weights once real close-rate data comes back from GHL.",
+  "max_score": 100,
+  "rules": [
+    {
+      "id": "intent_topic_exact_mca",
+      "description": "Intent topic is the exact 'merchant cash advances' topic, not an adjacent one",
+      "condition": "business_intent_topics contains 'business finance: merchant cash advances'",
+      "points": 25
+    },
+    {
+      "id": "intent_score_high",
+      "description": "Underlying Explorium intent score >= 70",
+      "condition": "intent_topic_score >= 70",
+      "points": 20
+    },
+    {
+      "id": "intent_score_medium",
+      "description": "Underlying Explorium intent score 60-69",
+      "condition": "intent_topic_score >= 60 && intent_topic_score < 70",
+      "points": 10
+    },
+    {
+      "id": "owner_level_contact",
+      "description": "Contact is owner/founder/president, not a manager-level proxy",
+      "condition": "job_level in ['owner', 'founder', 'president']",
+      "points": 20
+    },
+    {
+      "id": "revenue_sweet_spot",
+      "description": "Revenue in classic MCA sweet spot ($500K-$5M) -- big enough to be fundable, small enough to need MCA vs bank credit",
+      "condition": "company_revenue in ['500K-1M', '1M-5M']",
+      "points": 15
+    },
+    {
+      "id": "high_need_industry",
+      "description": "Restaurant/food, construction, or trucking -- classically cash-flow-dependent industries",
+      "condition": "naics_description matches ['Food Services', 'Construction', 'Truck Transportation']",
+      "points": 10
+    },
+    {
+      "id": "has_phone",
+      "description": "Direct phone available, not email-only",
+      "condition": "has_phone_number == true",
+      "points": 10
+    },
+    {
+      "id": "subsidiary_penalty",
+      "description": "Business description mentions acquisition by/subsidiary of a larger company -- likely false positive, not a real independent small business",
+      "condition": "business_description matches /acquired by|a .* company$|subsidiary of/i",
+      "points": -50
+    }
+  ],
+  "priority_buckets": {
+    "hot": { "min_score": 60, "call_within_hours": 4 },
+    "warm": { "min_score": 35, "call_within_hours": 24 },
+    "cold": { "min_score": 0, "call_within_hours": 72 }
+  }
+}
