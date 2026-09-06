@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Upload a new single</title>
+<link rel="stylesheet" href="style.css" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  .admin-wrap { max-width: 780px; margin: 0 auto; padding: 40px 24px 120px; }
+  .admin-wrap h1 { font-size: 36px; margin-bottom: 8px; }
+  .admin-wrap .sub { color: var(--muted); margin-bottom: 32px; }
+  .step {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 24px;
+    margin-bottom: 16px;
+  }
+  .step h2 {
+    font-size: 20px;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .step-num {
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--accent), var(--accent-2));
+    color: white;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    font-weight: 700;
+    font-family: 'Inter', sans-serif;
+    flex-shrink: 0;
+  }
+  .step p, .step li { color: var(--muted); font-size: 15px; margin-bottom: 8px; }
+  .step ul, .step ol { padding-left: 22px; }
+  .step a { color: var(--accent); text-decoration: underline; }
+  label { display: block; margin: 14px 0 6px; font-weight: 500; font-size: 14px; }
+  input[type=text], input[type=date] {
+    width: 100%;
+    padding: 12px 14px;
+    background: var(--bg-2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    color: var(--text);
+    font-family: inherit;
+    font-size: 15px;
+  }
+  input:focus { outline: 2px solid var(--accent); border-color: transparent; }
+  .output {
+    background: #05050a;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px;
+    font-family: 'SF Mono', Consolas, monospace;
+    font-size: 13px;
+    color: #b6f3c7;
+    white-space: pre-wrap;
+    word-break: break-all;
+    margin-top: 14px;
+  }
+  .btn-copy {
+    margin-top: 12px;
+    padding: 10px 18px;
+    background: rgba(255,45,85,0.15);
+    color: var(--accent);
+    border: 1px solid var(--accent);
+    border-radius: 999px;
+    cursor: pointer;
+    font-family: inherit;
+    font-weight: 600;
+    font-size: 14px;
+  }
+  .btn-copy:hover { background: rgba(255,45,85,0.25); }
+  code {
+    background: rgba(255,255,255,0.08);
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 13px;
+    color: #ffd1d9;
+  }
+  .back {
+    display: inline-block;
+    margin-bottom: 24px;
+    color: var(--muted);
+    font-size: 14px;
+  }
+  .back:hover { color: var(--text); }
+</style>
+</head>
+<body>
+<div class="bg-glow"></div>
+
+<div class="admin-wrap">
+  <a class="back" href="index.html">← Back to site</a>
+  <h1>Upload a new single</h1>
+  <p class="sub">A 3-step helper that walks your brother through adding a track. No dev tools needed.</p>
+
+  <div class="step">
+    <h2><span class="step-num">1</span> Upload the audio + cover art on GitHub</h2>
+    <ol>
+      <li>Open the repo on GitHub in the browser.</li>
+      <li>Go into the <code>music-site/audio</code> folder → click <b>Add file</b> → <b>Upload files</b> → drag your MP3 in → <b>Commit</b>.</li>
+      <li>Go into the <code>music-site/covers</code> folder → same thing with the cover image (JPG or PNG, ideally square).</li>
+    </ol>
+    <p>Tip: use short, lowercase filenames with no spaces — e.g. <code>my-new-song.mp3</code> and <code>my-new-song.jpg</code>.</p>
+  </div>
+
+  <div class="step">
+    <h2><span class="step-num">2</span> Fill in the details</h2>
+    <label>Song title</label>
+    <input type="text" id="fTitle" placeholder="My New Single" />
+
+    <label>MP3 filename (exactly as uploaded above)</label>
+    <input type="text" id="fAudio" placeholder="my-new-song.mp3" />
+
+    <label>Cover image filename (exactly as uploaded above)</label>
+    <input type="text" id="fCover" placeholder="my-new-song.jpg" />
+
+    <label>Release date</label>
+    <input type="date" id="fDate" />
+
+    <button class="btn-copy" id="genBtn">Generate the snippet</button>
+
+    <div id="out" class="output" style="display:none"></div>
+    <button class="btn-copy" id="copyBtn" style="display:none">Copy to clipboard</button>
+  </div>
+
+  <div class="step">
+    <h2><span class="step-num">3</span> Paste it into tracks.json</h2>
+    <ol>
+      <li>In the repo, open <code>music-site/tracks.json</code>.</li>
+      <li>Click the pencil icon (Edit).</li>
+      <li>Paste the snippet from step 2 as a <b>new entry</b> inside the <code>"tracks"</code> array (add a comma after the last existing entry).</li>
+      <li>Click <b>Commit changes</b>.</li>
+      <li>Wait ~1 minute for GitHub Pages to rebuild — refresh the site and the new single will be on the page.</li>
+    </ol>
+    <p><b>Example</b> of the final <code>tracks.json</code> after adding a new song:</p>
+    <div class="output">{
+  "tracks": [
+    { "id": "my-new-song", "title": "My New Single", "audio": "audio/my-new-song.mp3", "cover": "covers/my-new-song.jpg", "releaseDate": "2026-09-06" },
+    { "id": "older-song", "title": "Older Single", "audio": "audio/older.mp3", "cover": "covers/older.jpg", "releaseDate": "2026-08-01" }
+  ]
+}</div>
+  </div>
+</div>
+
+<script>
+  const out = document.getElementById('out');
+  const copyBtn = document.getElementById('copyBtn');
+
+  document.getElementById('genBtn').addEventListener('click', () => {
+    const title = document.getElementById('fTitle').value.trim() || 'Untitled';
+    const audio = document.getElementById('fAudio').value.trim();
+    const cover = document.getElementById('fCover').value.trim();
+    const date  = document.getElementById('fDate').value || new Date().toISOString().slice(0,10);
+
+    if (!audio) { alert('Please enter the MP3 filename.'); return; }
+
+    const id = title.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'') || 'track-' + Date.now();
+
+    const entry = {
+      id, title,
+      audio: 'audio/' + audio,
+      cover: cover ? 'covers/' + cover : '',
+      releaseDate: date
+    };
+
+    out.textContent = JSON.stringify(entry, null, 2) + ',';
+    out.style.display = 'block';
+    copyBtn.style.display = 'inline-block';
+  });
+
+  copyBtn.addEventListener('click', () => {
+    navigator.clipboard.writeText(out.textContent).then(() => {
+      copyBtn.textContent = 'Copied!';
+      setTimeout(() => copyBtn.textContent = 'Copy to clipboard', 1500);
+    });
+  });
+</script>
+</body>
+</html>
