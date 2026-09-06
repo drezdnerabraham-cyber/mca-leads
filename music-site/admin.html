@@ -11,22 +11,23 @@
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
   .admin-wrap { max-width: 780px; margin: 0 auto; padding: 50px 24px 140px; }
-  .admin-wrap h1 { font-size: clamp(36px, 5.5vw, 52px); margin-bottom: 8px; }
-  .admin-wrap .sub { color: var(--muted); margin-bottom: 40px; font-size: 17px; }
+  .admin-wrap h1 { font-size: clamp(36px, 5.5vw, 52px); margin-bottom: 8px; background: linear-gradient(135deg, var(--accent-3), var(--accent), var(--accent-2)); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+  .admin-wrap .sub { color: var(--text-soft); margin-bottom: 40px; font-size: 17px; }
   .step {
     background: var(--card);
     border: 1px solid var(--border);
     border-radius: var(--radius);
     padding: 28px;
     margin-bottom: 18px;
+    box-shadow: var(--shadow-sm);
   }
   .step h2 {
     font-size: 22px;
-    margin-bottom: 14px;
+    margin-bottom: 16px;
     display: flex; align-items: center; gap: 14px;
   }
   .step-num {
-    width: 36px; height: 36px;
+    width: 38px; height: 38px;
     border-radius: 50%;
     background: linear-gradient(135deg, var(--accent), var(--accent-2));
     color: white;
@@ -35,76 +36,78 @@
     font-size: 15px; font-weight: 700;
     font-family: 'Inter', sans-serif;
     flex-shrink: 0;
-    box-shadow: 0 6px 20px rgba(255,45,85,0.4);
+    box-shadow: 0 6px 20px rgba(255,46,99,0.4);
   }
-  .step p, .step li { color: var(--muted); font-size: 15px; margin-bottom: 8px; }
+  .step p, .step li { color: var(--text-soft); font-size: 15px; margin-bottom: 8px; }
   .step ul, .step ol { padding-left: 24px; }
   .step a { color: var(--accent); text-decoration: underline; }
-  label { display: block; margin: 16px 0 6px; font-weight: 500; font-size: 14px; color: var(--text); }
+  label { display: block; margin: 16px 0 6px; font-weight: 600; font-size: 14px; color: var(--text); }
   input[type=text], input[type=date], input[type=password] {
     width: 100%;
     padding: 14px 16px;
-    background: var(--bg-2);
-    border: 1px solid var(--border);
+    background: var(--bg);
+    border: 1px solid var(--border-2);
     border-radius: 12px;
     color: var(--text);
     font-family: inherit;
     font-size: 15px;
-    transition: border-color .2s;
+    transition: border-color .2s, box-shadow .2s;
   }
-  input:focus { outline: none; border-color: var(--accent); }
+  input:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 4px rgba(255,46,99,0.1); }
   .output {
-    background: #05050a;
-    border: 1px solid var(--border);
+    background: #fff8f0;
+    border: 1px solid var(--border-2);
     border-radius: 12px;
     padding: 18px;
     font-family: 'SF Mono', Consolas, monospace;
     font-size: 13px;
-    color: #b6f3c7;
+    color: #7a3419;
     white-space: pre-wrap;
     word-break: break-all;
     margin-top: 14px;
   }
   .btn-copy {
     margin-top: 14px;
-    padding: 12px 22px;
-    background: rgba(255,45,85,0.15);
-    color: var(--accent);
-    border: 1px solid var(--accent);
+    padding: 12px 24px;
+    background: linear-gradient(135deg, var(--accent), var(--accent-2));
+    color: white;
+    border: none;
     border-radius: 999px;
     cursor: pointer;
     font-family: inherit;
     font-weight: 600;
     font-size: 14px;
-    transition: background .2s;
+    box-shadow: 0 8px 20px rgba(255,46,99,0.3);
+    transition: transform .15s, box-shadow .2s;
   }
-  .btn-copy:hover { background: rgba(255,45,85,0.25); }
+  .btn-copy:hover { transform: translateY(-2px); box-shadow: 0 12px 30px rgba(255,46,99,0.4); }
   code {
-    background: rgba(255,255,255,0.08);
-    padding: 3px 7px;
+    background: rgba(255,46,99,0.1);
+    padding: 3px 8px;
     border-radius: 6px;
     font-size: 13px;
-    color: #ffd1d9;
+    color: var(--accent);
+    font-weight: 600;
   }
-  .back { display: inline-block; margin-bottom: 28px; color: var(--muted); font-size: 14px; }
-  .back:hover { color: var(--text); }
+  .back { display: inline-block; margin-bottom: 28px; color: var(--text-soft); font-size: 14px; font-weight: 500; }
+  .back:hover { color: var(--accent); }
 
   /* Password gate */
   .gate {
-    max-width: 420px;
+    max-width: 440px;
     margin: 100px auto 0;
-    padding: 40px 32px;
+    padding: 44px 36px;
     background: var(--card);
     border: 1px solid var(--border);
     border-radius: var(--radius);
     text-align: center;
     box-shadow: var(--shadow);
   }
-  .gate .lock { font-size: 40px; margin-bottom: 16px; }
-  .gate h1 { font-size: 28px; margin-bottom: 8px; }
-  .gate p { color: var(--muted); font-size: 15px; margin-bottom: 24px; }
+  .gate .lock { font-size: 44px; margin-bottom: 18px; }
+  .gate h1 { font-size: 30px; margin-bottom: 10px; color: var(--text); }
+  .gate p { color: var(--text-soft); font-size: 15px; margin-bottom: 26px; }
   .gate .btn-primary { width: 100%; justify-content: center; margin-top: 14px; }
-  .gate-error { color: var(--accent); font-size: 13px; margin-top: 10px; min-height: 18px; }
+  .gate-error { color: var(--accent); font-size: 13px; margin-top: 12px; min-height: 18px; font-weight: 600; }
 </style>
 </head>
 <body>
@@ -112,7 +115,6 @@
   <div class="orb orb-1"></div>
   <div class="orb orb-2"></div>
 </div>
-<div class="grain"></div>
 
 <!-- Password gate -->
 <div id="gate" class="gate">
