@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Latest Singles — Logo Pack</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  *,*:before,*:after { box-sizing:border-box; margin:0; padding:0; }
+  :root {
+    --bg:#fff7ef; --card:#fff; --text:#1a1524; --muted:#4a4358;
+    --accent:#ff2e63; --border:rgba(26,21,36,0.08);
+  }
+  body {
+    font-family:'Inter',system-ui,sans-serif;
+    background:var(--bg); color:var(--text);
+    padding:32px 20px 80px; line-height:1.5;
+    background-image:
+      radial-gradient(circle at 15% 10%, rgba(255,179,198,0.5), transparent 45%),
+      radial-gradient(circle at 90% 25%, rgba(255,212,163,0.5), transparent 40%),
+      radial-gradient(circle at 40% 90%, rgba(212,179,255,0.4), transparent 45%);
+    min-height:100vh;
+  }
+  .wrap { max-width:820px; margin:0 auto; }
+  h1 { font-family:'Space Grotesk',sans-serif; font-size:38px; margin-bottom:8px; letter-spacing:-0.02em; }
+  .sub { color:var(--muted); margin-bottom:36px; font-size:16px; }
+  .card {
+    background:var(--card); border:1px solid var(--border);
+    border-radius:22px; padding:24px; margin-bottom:20px;
+    box-shadow:0 8px 30px rgba(255,46,99,0.08);
+  }
+  .card h2 { font-family:'Space Grotesk',sans-serif; font-size:20px; margin-bottom:6px; }
+  .card p { color:var(--muted); font-size:14px; margin-bottom:18px; }
+  .card .preview {
+    background:linear-gradient(135deg,#fff7ef 0%, #fdeadb 100%);
+    border-radius:16px; padding:36px 20px;
+    display:flex; align-items:center; justify-content:center;
+    min-height:220px;
+  }
+  .card.dark .preview { background:linear-gradient(135deg,#1a1524 0%, #2a2438 100%); }
+  .card .preview img { max-width:100%; height:auto; }
+  .actions { margin-top:16px; display:flex; gap:10px; flex-wrap:wrap; }
+  .btn {
+    display:inline-flex; align-items:center; gap:8px;
+    padding:10px 18px; border-radius:999px;
+    background:linear-gradient(135deg,#ff2e63,#ff8a3d);
+    color:white; font-weight:600; font-size:14px;
+    text-decoration:none; border:none; cursor:pointer;
+    box-shadow:0 6px 18px rgba(255,46,99,0.3);
+  }
+  .btn.secondary { background:#fff; color:var(--text); border:1px solid var(--border); box-shadow:none; }
+  .row { display:grid; grid-template-columns:1fr 1fr; gap:20px; }
+  @media (max-width:600px){ .row { grid-template-columns:1fr; } h1 { font-size:32px; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Latest Singles — Logo Pack</h1>
+  <p class="sub">4 versions. Tap "Download" on the one you want.</p>
+
+  <div class="card">
+    <h2>1 · Horizontal Wordmark</h2>
+    <p>For the top of the website, headers, business cards.</p>
+    <div class="preview">
+      <img src="logo-horizontal.svg" alt="Latest Singles horizontal logo" />
+    </div>
+    <div class="actions">
+      <a class="btn" href="logo-horizontal.svg" download>Download SVG</a>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="card">
+      <h2>2 · Square Icon</h2>
+      <p>Social profile pic, favicon, WhatsApp/Telegram avatar.</p>
+      <div class="preview">
+        <img src="logo-square.svg" alt="Latest Singles square icon" style="max-width:180px"/>
+      </div>
+      <div class="actions">
+        <a class="btn" href="logo-square.svg" download>Download SVG</a>
+      </div>
+    </div>
+
+    <div class="card dark">
+      <h2>3 · Monogram</h2>
+      <p>Bold, dark background — great for merch, stamps, watermark.</p>
+      <div class="preview">
+        <img src="logo-monogram.svg" alt="LS monogram" style="max-width:180px"/>
+      </div>
+      <div class="actions">
+        <a class="btn" href="logo-monogram.svg" download>Download SVG</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>How to use these</h2>
+    <p style="margin-bottom:12px"><b>SVG</b> = a logo file that never gets blurry, at any size. Perfect for the website and for anywhere modern (WhatsApp, Telegram, Instagram profile).</p>
+    <p style="margin-bottom:12px">If somewhere asks for a PNG or JPG instead: open the SVG on your phone, screenshot it, and use the screenshot. Or use a free converter — search "svg to png" in your browser, upload, download PNG.</p>
+    <p><b>Recommended:</b> use #2 (Square Icon) as the WhatsApp group photo, Telegram group photo, and Instagram profile pic — so all three match the site.</p>
+  </div>
+</div>
+</body>
+</html>
