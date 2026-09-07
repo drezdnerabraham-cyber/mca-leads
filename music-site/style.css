@@ -91,18 +91,31 @@ img { display: block; max-width: 100%; }
   border-bottom: 1px solid var(--border);
 }
 .brand {
-  display: flex; align-items: center; gap: 10px;
+  display: flex; align-items: center; gap: 12px;
   font-family: 'Space Grotesk', sans-serif;
   font-weight: 700;
   font-size: 20px;
   letter-spacing: -0.02em;
   color: var(--text);
+  text-decoration: none;
 }
-.brand-dot {
-  width: 14px; height: 14px; border-radius: 50%;
-  background: linear-gradient(135deg, var(--accent), var(--accent-2));
-  box-shadow: 0 0 24px rgba(255,46,99,0.6);
-  animation: pulse 2s ease-in-out infinite;
+.brand-logo {
+  width: 44px; height: 44px;
+  border-radius: 50%;
+  display: block;
+  filter: drop-shadow(0 4px 12px rgba(255,46,99,0.25));
+}
+.hero-logo {
+  width: clamp(180px, 32vw, 280px);
+  height: auto;
+  margin: 0 auto 32px;
+  display: block;
+  filter: drop-shadow(0 20px 50px rgba(255,46,99,0.3));
+  animation: float 6s ease-in-out infinite;
+}
+@keyframes float {
+  0%,100% { transform: translateY(0); }
+  50%     { transform: translateY(-10px); }
 }
 @keyframes pulse {
   0%,100% { transform: scale(1); opacity: 1; }
