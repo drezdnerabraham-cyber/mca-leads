@@ -1,0 +1,73 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512" role="img" aria-label="Latest Singles">
+  <defs>
+    <linearGradient id="stampG" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#9c4dff"/>
+      <stop offset="50%" stop-color="#ff2e63"/>
+      <stop offset="100%" stop-color="#ff8a3d"/>
+    </linearGradient>
+    <filter id="paperShadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="6" stdDeviation="8" flood-color="#1a1524" flood-opacity="0.15"/>
+    </filter>
+  </defs>
+
+  <!-- Off-white ground -->
+  <rect width="512" height="512" fill="#fff7ef"/>
+
+  <!-- Sticker/badge -->
+  <g transform="translate(256 256)" filter="url(#paperShadow)">
+    <!-- Wavy circular badge -->
+    <path d="
+      M 0,-220
+      Q 40,-215 55,-205
+      Q 80,-190 100,-200
+      Q 130,-210 145,-190
+      Q 165,-165 185,-165
+      Q 215,-165 215,-135
+      Q 215,-105 200,-90
+      Q 180,-70 195,-45
+      Q 215,-15 205,15
+      Q 195,45 165,50
+      Q 130,55 130,80
+      Q 130,110 105,125
+      Q 75,145 55,140
+      Q 25,135 5,155
+      Q -15,175 -45,170
+      Q -80,165 -95,145
+      Q -115,120 -145,120
+      Q -180,120 -190,90
+      Q -200,60 -180,40
+      Q -160,20 -175,-10
+      Q -195,-40 -180,-70
+      Q -165,-100 -140,-100
+      Q -110,-100 -105,-130
+      Q -100,-160 -70,-175
+      Q -40,-190 -20,-210
+      Q -10,-220 0,-220
+      Z" fill="url(#stampG)"/>
+    <!-- Inner outline -->
+    <circle r="175" fill="none" stroke="rgba(255,255,255,0.4)" stroke-width="3" stroke-dasharray="4 8"/>
+
+    <!-- Stacked wordmark -->
+    <text x="0" y="-30" text-anchor="middle"
+          font-family="'Space Grotesk',sans-serif" font-weight="700"
+          font-size="52" letter-spacing="-2" fill="#fff">LATEST</text>
+    <text x="0" y="30" text-anchor="middle"
+          font-family="'Space Grotesk',sans-serif" font-weight="700" font-style="italic"
+          font-size="52" letter-spacing="-2" fill="#fff">SINGLES</text>
+
+    <!-- Small dividers -->
+    <line x1="-70" y1="-58" x2="70" y2="-58" stroke="rgba(255,255,255,0.6)" stroke-width="2"/>
+    <line x1="-70" y1="58"  x2="70" y2="58"  stroke="rgba(255,255,255,0.6)" stroke-width="2"/>
+
+    <!-- Bottom tagline arc -->
+    <text x="0" y="105" text-anchor="middle"
+          font-family="'Inter',sans-serif" font-weight="600"
+          font-size="16" letter-spacing="6" fill="rgba(255,255,255,0.9)">NEW HEAT · EST. 2026</text>
+
+    <!-- Little stars -->
+    <g fill="#fff">
+      <path d="M -140 0 l 4 -12 l 4 12 l 12 4 l -12 4 l -4 12 l -4 -12 l -12 -4 z"/>
+      <path d="M 140 0 l 4 -12 l 4 12 l 12 4 l -12 4 l -4 12 l -4 -12 l -12 -4 z"/>
+    </g>
+  </g>
+</svg>

@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512" role="img" aria-label="Latest Singles">
+  <defs>
+    <radialGradient id="vinylG" cx="0.5" cy="0.5" r="0.7">
+      <stop offset="0%"  stop-color="#2a1a3f"/>
+      <stop offset="55%" stop-color="#0d0616"/>
+      <stop offset="100%" stop-color="#000"/>
+    </radialGradient>
+    <linearGradient id="labelG" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#ff2e63"/>
+      <stop offset="50%" stop-color="#ff8a3d"/>
+      <stop offset="100%" stop-color="#ffd23f"/>
+    </linearGradient>
+    <linearGradient id="shineG" x1="0" y1="0" x2="0.6" y2="1">
+      <stop offset="0%" stop-color="#fff" stop-opacity="0.35"/>
+      <stop offset="100%" stop-color="#fff" stop-opacity="0"/>
+    </linearGradient>
+    <path id="topCircle" d="M 76,256 A 180,180 0 0 1 436,256" fill="none"/>
+    <path id="botCircle" d="M 436,256 A 180,180 0 0 1 76,256" fill="none"/>
+  </defs>
+
+  <!-- Backdrop with soft warm halo -->
+  <rect width="512" height="512" fill="#fff7ef"/>
+  <circle cx="256" cy="256" r="240" fill="url(#labelG)" opacity="0.18"/>
+
+  <!-- Vinyl disc -->
+  <g transform="translate(256 256)">
+    <circle r="200" fill="url(#vinylG)"/>
+    <!-- Grooves -->
+    <g fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="1.5">
+      <circle r="192"/><circle r="180"/><circle r="168"/><circle r="156"/>
+      <circle r="144"/><circle r="132"/><circle r="120"/><circle r="108"/>
+      <circle r="98"/>
+    </g>
+    <!-- Center label -->
+    <circle r="88" fill="url(#labelG)"/>
+    <circle r="88" fill="url(#shineG)"/>
+    <!-- Play triangle in the center hole -->
+    <circle r="14" fill="#0d0616"/>
+    <path d="M -22 -28 L 30 0 L -22 28 Z" fill="#fff" opacity="0.9" transform="translate(4 0) scale(0.55)"/>
+    <!-- Highlight sweep on vinyl -->
+    <path d="M -180 -80 A 200 200 0 0 1 -80 -180" stroke="#fff" stroke-width="3" fill="none" opacity="0.15" stroke-linecap="round"/>
+  </g>
+
+  <!-- Curved text — top -->
+  <text font-family="'Space Grotesk',sans-serif" font-weight="700" font-size="34" letter-spacing="8" fill="#1a1524">
+    <textPath href="#topCircle" startOffset="50%" text-anchor="middle">LATEST · SINGLES · LATEST · SINGLES</textPath>
+  </text>
+</svg>
