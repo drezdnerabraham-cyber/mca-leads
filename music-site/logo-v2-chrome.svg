@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 400" width="900" height="400" role="img" aria-label="Latest Singles">
+  <defs>
+    <linearGradient id="chromeG" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%"  stop-color="#ffd7e6"/>
+      <stop offset="25%" stop-color="#ff2e63"/>
+      <stop offset="55%" stop-color="#9c4dff"/>
+      <stop offset="80%" stop-color="#ff2e63"/>
+      <stop offset="100%" stop-color="#ff8a3d"/>
+    </linearGradient>
+    <linearGradient id="strokeG" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#fff"/>
+      <stop offset="100%" stop-color="#9c4dff"/>
+    </linearGradient>
+    <filter id="chromeGlow">
+      <feGaussianBlur stdDeviation="4" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+
+  <!-- Dark backdrop with subtle radial -->
+  <rect width="900" height="400" fill="#0d0616"/>
+  <ellipse cx="450" cy="200" rx="500" ry="180" fill="url(#chromeG)" opacity="0.15"/>
+
+  <!-- Grid lines for that y2k retro vibe -->
+  <g stroke="rgba(255,46,99,0.15)" stroke-width="1">
+    <line x1="0" y1="380" x2="900" y2="380"/>
+    <line x1="0" y1="360" x2="900" y2="360"/>
+    <line x1="0" y1="335" x2="900" y2="335"/>
+    <line x1="0" y1="305" x2="900" y2="305"/>
+    <line x1="0" y1="270" x2="900" y2="270"/>
+  </g>
+
+  <!-- Big chrome wordmark -->
+  <g filter="url(#chromeGlow)">
+    <text x="450" y="210" text-anchor="middle"
+          font-family="'Space Grotesk','Inter',sans-serif" font-weight="700"
+          font-size="128" letter-spacing="-6"
+          fill="url(#chromeG)"
+          stroke="url(#strokeG)" stroke-width="2">LATEST</text>
+    <text x="450" y="320" text-anchor="middle"
+          font-family="'Space Grotesk','Inter',sans-serif" font-weight="700" font-style="italic"
+          font-size="88" letter-spacing="-3"
+          fill="url(#chromeG)"
+          stroke="url(#strokeG)" stroke-width="1.5">SINGLES</text>
+  </g>
+
+  <!-- Tagline pill -->
+  <g transform="translate(450 90)">
+    <rect x="-140" y="-22" width="280" height="34" rx="17"
+          fill="none" stroke="url(#chromeG)" stroke-width="1.5"/>
+    <text text-anchor="middle" y="1"
+          font-family="'Inter',sans-serif" font-weight="600" font-size="12" letter-spacing="8"
+          fill="url(#chromeG)">NEW HEAT · EST. MMXXVI</text>
+  </g>
+
+  <!-- Star bursts -->
+  <g fill="url(#chromeG)">
+    <path transform="translate(150 200)" d="M 0 -18 L 5 -5 L 18 0 L 5 5 L 0 18 L -5 5 L -18 0 L -5 -5 Z"/>
+    <path transform="translate(750 200)" d="M 0 -18 L 5 -5 L 18 0 L 5 5 L 0 18 L -5 5 L -18 0 L -5 -5 Z"/>
+  </g>
+</svg>

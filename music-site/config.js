@@ -2,21 +2,23 @@
 // Nothing else in this project needs changing.
 
 window.SITE_CONFIG = {
-  // Your artist / brand name (shown big on the page + browser tab).
-  // Change this to your brother's actual artist name.
+  // Site / artist name (browser tab + big logo up top)
   artistName: "Latest Singles",
 
-  // A short one-line tagline under the name.
-  tagline: "New singles. Straight from the studio.",
+  // Short tagline under the name
+  tagline: "New heat. Straight from the studio.",
 
-  // WhatsApp group invite link (already filled in from your message)
+  // WhatsApp group invite link
   whatsappGroupUrl: "https://chat.whatsapp.com/L2T0u4BH2H78SjsaNJQFGx?s=cl&p=a&mlu=4&ilr=4",
 
-  // Telegram group / channel invite link (already filled in from your message)
+  // Telegram group / channel invite link
   telegramGroupUrl: "https://t.me/Latestsingles",
 
-  // Optional: instagram / youtube / email. Leave empty "" to hide.
+  // Password for the Upload page (only he knows it — change it to whatever you want)
+  uploadPassword: "letmein",
+
+  // Optional socials — leave "" to hide
   instagramUrl: "",
   youtubeUrl: "",
-  contactEmail: ""
+  contactEmail: "latestsingles0@gmail.com"
 };

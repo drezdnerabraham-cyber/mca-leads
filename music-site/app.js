@@ -1,20 +1,27 @@
 (function () {
   const cfg = window.SITE_CONFIG || {};
 
-  // Fill in the artist name, tagline, links from config.js
+  // Fill in artist name, tagline, links from config.js
   document.title = cfg.artistName ? cfg.artistName + " — Official" : "Official Music";
   document.getElementById("brand").textContent = cfg.artistName || "Your Name";
   document.getElementById("artistName").textContent = cfg.artistName || "Your Name";
   document.getElementById("tagline").textContent = cfg.tagline || "";
   document.getElementById("footerName").textContent = cfg.artistName || "";
+  document.getElementById("footerBrand").textContent = cfg.artistName || "";
   document.getElementById("year").textContent = new Date().getFullYear();
+
+  // Marquee — repeat the artist name
+  const marquee = document.getElementById("marquee");
+  if (marquee && cfg.artistName) {
+    const item = `<span class="marquee-item">${escapeHtml(cfg.artistName)}</span>`;
+    marquee.innerHTML = item.repeat(20);
+  }
 
   const waLink = document.getElementById("waLink");
   const tgLink = document.getElementById("tgLink");
   if (cfg.whatsappGroupUrl) waLink.href = cfg.whatsappGroupUrl;
   if (cfg.telegramGroupUrl) tgLink.href = cfg.telegramGroupUrl;
 
-  // Optional socials
   const socials = document.getElementById("socials");
   const socialItems = [
     { url: cfg.instagramUrl, label: "Instagram" },
@@ -25,48 +32,52 @@
     .map(s => `<a href="${s.url}" target="_blank" rel="noopener">${s.label}</a>`)
     .join("");
 
-  // Load tracks
   const trackList = document.getElementById("trackList");
 
   fetch("tracks.json?t=" + Date.now())
-    .then(r => {
-      if (!r.ok) throw new Error("failed to load tracks.json");
-      return r.json();
-    })
+    .then(r => { if (!r.ok) throw new Error("failed to load tracks.json"); return r.json(); })
     .then(data => {
       const tracks = (data.tracks || []).slice().sort((a, b) => {
         return (b.releaseDate || "").localeCompare(a.releaseDate || "");
       });
       if (!tracks.length) {
-        trackList.innerHTML = '<div class="empty">No tracks yet. Add your first single via the <a href="admin.html" style="color:var(--accent)">Upload</a> helper.</div>';
+        trackList.innerHTML = `
+          <div class="empty">
+            <h3>No singles yet</h3>
+            <p>The first drop is coming — check back soon, or hit up the WhatsApp / Telegram group so you don't miss it.</p>
+          </div>`;
         return;
       }
       renderTracks(tracks);
     })
     .catch(err => {
       console.error(err);
-      trackList.innerHTML = '<div class="empty">Could not load tracks.json. Check that the file exists and is valid JSON.</div>';
+      trackList.innerHTML = '<div class="empty"><h3>Couldn\'t load tracks</h3><p>Check that tracks.json exists and is valid JSON.</p></div>';
     });
 
   function renderTracks(tracks) {
     trackList.innerHTML = "";
-    tracks.forEach(t => {
+    tracks.forEach((t, i) => {
       const el = document.createElement("div");
       el.className = "track";
+      const badge = i === 0 ? '<div class="track-badge">New</div>' : '';
       el.innerHTML = `
-        <img class="track-cover" src="${escapeAttr(t.cover || '')}" alt="" onerror="this.style.background='linear-gradient(135deg,#ff2d55,#ff6a3d)';this.removeAttribute('src')" />
+        ${badge}
+        <div class="track-cover-wrap">
+          <img class="track-cover" src="${escapeAttr(t.cover || '')}" alt="" onerror="this.style.display='none'" />
+          <div class="track-cover-overlay"></div>
+          <button class="play-btn" aria-label="Play">▶</button>
+        </div>
         <div class="track-info">
           <div class="track-title">${escapeHtml(t.title || 'Untitled')}</div>
           <div class="track-date">${formatDate(t.releaseDate)}</div>
         </div>
-        <button class="play-btn" aria-label="Play">▶</button>
       `;
       el.addEventListener("click", () => playTrack(t));
       trackList.appendChild(el);
     });
   }
 
-  // Sticky mini player
   const player = document.getElementById("player");
   const audio = document.getElementById("audio");
   const pTitle = document.getElementById("pTitle");
@@ -88,7 +99,6 @@
     player.classList.add("hidden");
   });
 
-  // Utils
   function escapeHtml(s) {
     return String(s).replace(/[&<>"']/g, c => ({
       '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'

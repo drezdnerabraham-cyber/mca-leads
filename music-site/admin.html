@@ -3,114 +3,143 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Upload a new single</title>
+<title>Upload — Artist only</title>
+<meta name="robots" content="noindex" />
 <link rel="stylesheet" href="style.css" />
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
-  .admin-wrap { max-width: 780px; margin: 0 auto; padding: 40px 24px 120px; }
-  .admin-wrap h1 { font-size: 36px; margin-bottom: 8px; }
-  .admin-wrap .sub { color: var(--muted); margin-bottom: 32px; }
+  .admin-wrap { max-width: 780px; margin: 0 auto; padding: 50px 24px 140px; }
+  .admin-wrap h1 { font-size: clamp(36px, 5.5vw, 52px); margin-bottom: 8px; background: linear-gradient(135deg, var(--accent-3), var(--accent), var(--accent-2)); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+  .admin-wrap .sub { color: var(--text-soft); margin-bottom: 40px; font-size: 17px; }
   .step {
     background: var(--card);
     border: 1px solid var(--border);
     border-radius: var(--radius);
-    padding: 24px;
-    margin-bottom: 16px;
+    padding: 28px;
+    margin-bottom: 18px;
+    box-shadow: var(--shadow-sm);
   }
   .step h2 {
-    font-size: 20px;
-    margin-bottom: 12px;
-    display: flex;
-    align-items: center;
-    gap: 12px;
+    font-size: 22px;
+    margin-bottom: 16px;
+    display: flex; align-items: center; gap: 14px;
   }
   .step-num {
-    width: 32px; height: 32px;
+    width: 38px; height: 38px;
     border-radius: 50%;
     background: linear-gradient(135deg, var(--accent), var(--accent-2));
     color: white;
     display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 14px;
-    font-weight: 700;
+    align-items: center; justify-content: center;
+    font-size: 15px; font-weight: 700;
     font-family: 'Inter', sans-serif;
     flex-shrink: 0;
+    box-shadow: 0 6px 20px rgba(255,46,99,0.4);
   }
-  .step p, .step li { color: var(--muted); font-size: 15px; margin-bottom: 8px; }
-  .step ul, .step ol { padding-left: 22px; }
+  .step p, .step li { color: var(--text-soft); font-size: 15px; margin-bottom: 8px; }
+  .step ul, .step ol { padding-left: 24px; }
   .step a { color: var(--accent); text-decoration: underline; }
-  label { display: block; margin: 14px 0 6px; font-weight: 500; font-size: 14px; }
-  input[type=text], input[type=date] {
+  label { display: block; margin: 16px 0 6px; font-weight: 600; font-size: 14px; color: var(--text); }
+  input[type=text], input[type=date], input[type=password] {
     width: 100%;
-    padding: 12px 14px;
-    background: var(--bg-2);
-    border: 1px solid var(--border);
-    border-radius: 10px;
+    padding: 14px 16px;
+    background: var(--bg);
+    border: 1px solid var(--border-2);
+    border-radius: 12px;
     color: var(--text);
     font-family: inherit;
     font-size: 15px;
+    transition: border-color .2s, box-shadow .2s;
   }
-  input:focus { outline: 2px solid var(--accent); border-color: transparent; }
+  input:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 4px rgba(255,46,99,0.1); }
   .output {
-    background: #05050a;
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 16px;
+    background: #fff8f0;
+    border: 1px solid var(--border-2);
+    border-radius: 12px;
+    padding: 18px;
     font-family: 'SF Mono', Consolas, monospace;
     font-size: 13px;
-    color: #b6f3c7;
+    color: #7a3419;
     white-space: pre-wrap;
     word-break: break-all;
     margin-top: 14px;
   }
   .btn-copy {
-    margin-top: 12px;
-    padding: 10px 18px;
-    background: rgba(255,45,85,0.15);
-    color: var(--accent);
-    border: 1px solid var(--accent);
+    margin-top: 14px;
+    padding: 12px 24px;
+    background: linear-gradient(135deg, var(--accent), var(--accent-2));
+    color: white;
+    border: none;
     border-radius: 999px;
     cursor: pointer;
     font-family: inherit;
     font-weight: 600;
     font-size: 14px;
+    box-shadow: 0 8px 20px rgba(255,46,99,0.3);
+    transition: transform .15s, box-shadow .2s;
   }
-  .btn-copy:hover { background: rgba(255,45,85,0.25); }
+  .btn-copy:hover { transform: translateY(-2px); box-shadow: 0 12px 30px rgba(255,46,99,0.4); }
   code {
-    background: rgba(255,255,255,0.08);
-    padding: 2px 6px;
-    border-radius: 4px;
+    background: rgba(255,46,99,0.1);
+    padding: 3px 8px;
+    border-radius: 6px;
     font-size: 13px;
-    color: #ffd1d9;
+    color: var(--accent);
+    font-weight: 600;
   }
-  .back {
-    display: inline-block;
-    margin-bottom: 24px;
-    color: var(--muted);
-    font-size: 14px;
+  .back { display: inline-block; margin-bottom: 28px; color: var(--text-soft); font-size: 14px; font-weight: 500; }
+  .back:hover { color: var(--accent); }
+
+  /* Password gate */
+  .gate {
+    max-width: 440px;
+    margin: 100px auto 0;
+    padding: 44px 36px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    text-align: center;
+    box-shadow: var(--shadow);
   }
-  .back:hover { color: var(--text); }
+  .gate .lock { font-size: 44px; margin-bottom: 18px; }
+  .gate h1 { font-size: 30px; margin-bottom: 10px; color: var(--text); }
+  .gate p { color: var(--text-soft); font-size: 15px; margin-bottom: 26px; }
+  .gate .btn-primary { width: 100%; justify-content: center; margin-top: 14px; }
+  .gate-error { color: var(--accent); font-size: 13px; margin-top: 12px; min-height: 18px; font-weight: 600; }
 </style>
 </head>
 <body>
-<div class="bg-glow"></div>
+<div class="bg-orbs">
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+</div>
 
-<div class="admin-wrap">
+<!-- Password gate -->
+<div id="gate" class="gate">
+  <div class="lock">🔒</div>
+  <h1>Artist Only</h1>
+  <p>This page is for the artist to add new singles. Enter the password to continue.</p>
+  <input type="password" id="pw" placeholder="Password" autocomplete="off" />
+  <button class="btn btn-primary" id="unlock">Unlock</button>
+  <div class="gate-error" id="gateErr"></div>
+</div>
+
+<!-- Actual admin content, hidden until unlocked -->
+<div class="admin-wrap" id="adminContent" style="display:none">
   <a class="back" href="index.html">← Back to site</a>
   <h1>Upload a new single</h1>
-  <p class="sub">A 3-step helper that walks your brother through adding a track. No dev tools needed.</p>
+  <p class="sub">3 short steps. Works entirely in your Netlify dashboard — no coding.</p>
 
   <div class="step">
-    <h2><span class="step-num">1</span> Upload the audio + cover art on GitHub</h2>
+    <h2><span class="step-num">1</span> Upload the MP3 + cover on Netlify</h2>
     <ol>
-      <li>Open the repo on GitHub in the browser.</li>
-      <li>Go into the <code>music-site/audio</code> folder → click <b>Add file</b> → <b>Upload files</b> → drag your MP3 in → <b>Commit</b>.</li>
-      <li>Go into the <code>music-site/covers</code> folder → same thing with the cover image (JPG or PNG, ideally square).</li>
+      <li>Go to your Netlify site dashboard.</li>
+      <li>Open <b>Deploys</b> → <b>File browser</b> (or drop an updated folder onto the drop area).</li>
+      <li>Put the MP3 in <code>audio/</code> and the cover image in <code>covers/</code>.</li>
     </ol>
-    <p>Tip: use short, lowercase filenames with no spaces — e.g. <code>my-new-song.mp3</code> and <code>my-new-song.jpg</code>.</p>
+    <p>Tip: short, lowercase filenames with no spaces work best — <code>my-song.mp3</code>, <code>my-song.jpg</code>.</p>
   </div>
 
   <div class="step">
@@ -118,11 +147,11 @@
     <label>Song title</label>
     <input type="text" id="fTitle" placeholder="My New Single" />
 
-    <label>MP3 filename (exactly as uploaded above)</label>
-    <input type="text" id="fAudio" placeholder="my-new-song.mp3" />
+    <label>MP3 filename (exactly as uploaded)</label>
+    <input type="text" id="fAudio" placeholder="my-song.mp3" />
 
-    <label>Cover image filename (exactly as uploaded above)</label>
-    <input type="text" id="fCover" placeholder="my-new-song.jpg" />
+    <label>Cover image filename (exactly as uploaded)</label>
+    <input type="text" id="fCover" placeholder="my-song.jpg" />
 
     <label>Release date</label>
     <input type="date" id="fDate" />
@@ -136,48 +165,72 @@
   <div class="step">
     <h2><span class="step-num">3</span> Paste it into tracks.json</h2>
     <ol>
-      <li>In the repo, open <code>music-site/tracks.json</code>.</li>
-      <li>Click the pencil icon (Edit).</li>
-      <li>Paste the snippet from step 2 as a <b>new entry</b> inside the <code>"tracks"</code> array (add a comma after the last existing entry).</li>
-      <li>Click <b>Commit changes</b>.</li>
-      <li>Wait ~1 minute for GitHub Pages to rebuild — refresh the site and the new single will be on the page.</li>
+      <li>Open <code>tracks.json</code> on Netlify's file browser (or edit it locally).</li>
+      <li>Paste the snippet as a <b>new entry</b> inside the <code>"tracks"</code> array (add a comma after the last existing entry).</li>
+      <li>Save / redeploy. The new single shows up on the site within ~15 seconds.</li>
     </ol>
-    <p><b>Example</b> of the final <code>tracks.json</code> after adding a new song:</p>
+    <p><b>Example</b> of a full <code>tracks.json</code>:</p>
     <div class="output">{
   "tracks": [
-    { "id": "my-new-song", "title": "My New Single", "audio": "audio/my-new-song.mp3", "cover": "covers/my-new-song.jpg", "releaseDate": "2026-09-06" },
+    { "id": "my-new-song", "title": "My New Single", "audio": "audio/my-song.mp3", "cover": "covers/my-song.jpg", "releaseDate": "2026-09-06" },
     { "id": "older-song", "title": "Older Single", "audio": "audio/older.mp3", "cover": "covers/older.jpg", "releaseDate": "2026-08-01" }
   ]
 }</div>
   </div>
 </div>
 
+<script src="config.js"></script>
 <script>
+  const gate = document.getElementById('gate');
+  const admin = document.getElementById('adminContent');
+  const pw = document.getElementById('pw');
+  const err = document.getElementById('gateErr');
+  const cfg = window.SITE_CONFIG || {};
+  const expected = cfg.uploadPassword || "letmein";
+  const KEY = 'ls_unlocked_v1';
+
+  function unlock() {
+    gate.style.display = 'none';
+    admin.style.display = 'block';
+  }
+
+  if (sessionStorage.getItem(KEY) === '1') {
+    unlock();
+  }
+
+  document.getElementById('unlock').addEventListener('click', tryUnlock);
+  pw.addEventListener('keydown', e => { if (e.key === 'Enter') tryUnlock(); });
+
+  function tryUnlock() {
+    if (pw.value === expected) {
+      sessionStorage.setItem(KEY, '1');
+      unlock();
+    } else {
+      err.textContent = 'Wrong password. Try again.';
+      pw.value = '';
+      pw.focus();
+    }
+  }
+
   const out = document.getElementById('out');
   const copyBtn = document.getElementById('copyBtn');
-
   document.getElementById('genBtn').addEventListener('click', () => {
     const title = document.getElementById('fTitle').value.trim() || 'Untitled';
     const audio = document.getElementById('fAudio').value.trim();
     const cover = document.getElementById('fCover').value.trim();
     const date  = document.getElementById('fDate').value || new Date().toISOString().slice(0,10);
-
     if (!audio) { alert('Please enter the MP3 filename.'); return; }
-
     const id = title.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'') || 'track-' + Date.now();
-
     const entry = {
       id, title,
       audio: 'audio/' + audio,
       cover: cover ? 'covers/' + cover : '',
       releaseDate: date
     };
-
     out.textContent = JSON.stringify(entry, null, 2) + ',';
     out.style.display = 'block';
     copyBtn.style.display = 'inline-block';
   });
-
   copyBtn.addEventListener('click', () => {
     navigator.clipboard.writeText(out.textContent).then(() => {
       copyBtn.textContent = 'Copied!';
